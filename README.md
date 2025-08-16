@@ -7,7 +7,7 @@ By combining hydrological datasets with temporal features and advanced predictiv
 
 ---
 
-## 🌏 Background
+##  Background
 The Murray–Darling Basin is one of Australia’s most important water systems, sustaining agriculture, ecosystems, and communities. Nutrient export loads (e.g., nitrogen, phosphorus, organic matter) directly impact **water quality, biodiversity, and algal bloom risk**.  
 Understanding and forecasting these loads is essential for **evidence-based water management**.
 
@@ -15,7 +15,7 @@ Traditional hydrological models capture some aspects of nutrient transport but o
 
 ---
 
-## 🎯 Objectives
+##  Objectives
 - Investigate how **daily water flow** drives nutrient export in the Murray River.  
 - Build predictive models for **seven nutrient-related variables**.  
 - Compare the performance of **Random Forest, Support Vector Regression, and LSTM**.  
@@ -24,7 +24,7 @@ Traditional hydrological models capture some aspects of nutrient transport but o
 
 ---
 
-## 📂 Dataset
+##  Dataset
 - **Source**: Commonwealth Environmental Water Holder (CEWH) – Flow-MER program.  
 - **Period**: January 2014 – June 2023.  
 - **Data Size**: ~9.5 years of daily records from multiple stations.  
@@ -44,7 +44,7 @@ Traditional hydrological models capture some aspects of nutrient transport but o
 
 ---
 
-## ⚙️ Methodology
+##  Methodology
 1. **Data Preprocessing**  
    - Missing values handled via mean imputation.  
    - Outliers removed using IQR/Z-score methods.  
@@ -56,9 +56,9 @@ Traditional hydrological models capture some aspects of nutrient transport but o
    - Categorized flow into discrete bins (low, medium, high).  
 
 3. **Models Implemented**  
-   - 🌳 **Random Forest (RF)**: ensemble of decision trees, interpretable via feature importance.  
-   - ⚡ **Support Vector Regression (SVM, RBF kernel)**: captures non-linear interactions in high-dimensional space.  
-   - 🔗 **LSTM**: neural network for sequential dependencies, designed for time-series forecasting.  
+   -  **Random Forest (RF)**: ensemble of decision trees, interpretable via feature importance.  
+   -  **Support Vector Regression (SVM, RBF kernel)**: captures non-linear interactions in high-dimensional space.  
+   -  **LSTM**: neural network for sequential dependencies, designed for time-series forecasting.  
 
 4. **Hyperparameter Tuning**  
    - RF & SVM → `GridSearchCV` (cross-validation).  
@@ -72,7 +72,7 @@ Traditional hydrological models capture some aspects of nutrient transport but o
 
 ---
 
-## 📊 Results
+##  Results
 
 ### Model Comparison
 | Model          | R²      | Adjusted R² | MSE     | RMSE   |
@@ -100,14 +100,14 @@ The notebook produces:
 
 ---
 
-## 💡 Implications
+##  Implications
 - For **researchers**: Kernel-based ML (SVM) is highly effective for **medium-scale hydrological datasets**, outperforming deep learning in this case.  
 - For **practitioners**: SVM models can be integrated into **real-time monitoring systems**, supporting proactive nutrient management (e.g., reservoir releases, runoff control).  
 - For **policy makers**: The dominance of flow highlights the importance of **flow regulation** in reducing nutrient pollution risk.  
 
 ---
 
-## 🚧 Limitations
+##  Limitations
 - Limited environmental covariates (no precipitation, turbidity, or land-use data).  
 - Event-driven peaks (flood surges) not fully captured.  
 - Trained on one basin only; generalisation to other catchments untested.  
@@ -115,7 +115,7 @@ The notebook produces:
 
 ---
 
-## 🔮 Future Work
+##  Future Work
 - Expand feature set with **precipitation, turbidity, water temperature, and land use**.  
 - Develop **hybrid models** combining physical process models with ML.  
 - Train event-specific submodels for **flood/drought nutrient spikes**.  
@@ -124,7 +124,7 @@ The notebook produces:
 
 ---
 
-## 📦 Requirements
+##  Requirements
 Install dependencies before running the notebook:
 
 ```bash
