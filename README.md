@@ -1,87 +1,131 @@
-# BDAaP_Assignment1_PartD
-Nutrient Load Forecasting with SVM, Random Forest, and LSTM
-This repository contains the implementation of three predictive models—Support Vector Machine (SVM), Random Forest (RF), and Long Short-Term Memory (LSTM)—for forecasting daily nutrient export loads in the Murray–Darling Basin. All experiments are consolidated into a single Jupyter Notebook: three model.ipynb.
+# Nutrient Load Prediction in the Murray–Darling Basin
 
-The code reproduces the results and figures reported in Section 4 of the Assignment Part D report.
+This repository provides a Jupyter Notebook (`three model.ipynb`) that applies **machine learning techniques** to predict nutrient export loads in the Murray–Darling Basin (2014–2023).  
+The study addresses the critical question: *How does daily river flow influence nutrient export, and which nutrient is most sensitive to flow variation?*  
 
-1. Project Overview
-The primary objectives of this project are:
+By combining hydrological datasets with temporal features and advanced predictive models, this project demonstrates how **data-driven forecasting** can support **water quality management** in river ecosystems.
 
-To preprocess and prepare environmental and hydrological data for predictive modelling.
+---
 
-To engineer temporal and hydrological features relevant to nutrient transport.
+## 🌏 Background
+The Murray–Darling Basin is one of Australia’s most important water systems, sustaining agriculture, ecosystems, and communities. Nutrient export loads (e.g., nitrogen, phosphorus, organic matter) directly impact **water quality, biodiversity, and algal bloom risk**.  
+Understanding and forecasting these loads is essential for **evidence-based water management**.
 
-To train and evaluate SVM, RF, and LSTM models using consistent performance metrics.
+Traditional hydrological models capture some aspects of nutrient transport but often fail to represent **non-linear, time-dependent dynamics**. This project instead uses **machine learning** to capture these complex interactions, offering both **accuracy** and **interpretability**.
 
-To generate reproducible figures and tables for model comparison and reporting.
+---
 
-2. Repository Structure
-bash
+## 🎯 Objectives
+- Investigate how **daily water flow** drives nutrient export in the Murray River.  
+- Build predictive models for **seven nutrient-related variables**.  
+- Compare the performance of **Random Forest, Support Vector Regression, and LSTM**.  
+- Evaluate feature importance to identify key drivers of nutrient dynamics.  
+- Provide actionable insights for water managers and researchers.
 
-.
-├── three model.ipynb       # Main notebook: preprocessing → modelling → evaluation → plotting
-├── data/                   # Data folder (not included; see Data Sources below)
-├── figures/                # Generated plots from the notebook
-├── outputs/                # Generated metrics and predictions
-├── env/                    # Environment and dependency files
-│   ├── requirements.txt
-│   └── environment.yml
-└── README.md               # Project documentation
-3. Data Sources
-This repository does not include raw data. The experiments use publicly available daily flow and nutrient export datasets (2014–2023) from the Flow-MER program.
+---
 
-You will need to:
+## 📂 Dataset
+- **Source**: Commonwealth Environmental Water Holder (CEWH) – Flow-MER program.  
+- **Period**: January 2014 – June 2023.  
+- **Data Size**: ~9.5 years of daily records from multiple stations.  
 
-Download the daily river flow and nutrient export datasets from their official sources.
+**Features used**:
+- `Flow` – daily river discharge (primary hydrological driver).  
+- Temporal indicators: `Year`, `Month`, `Day`, `Weekday`.  
 
-Place them into the data/ directory, keeping filenames consistent with those specified in the notebook.
+**Prediction targets (7 variables)**:
+1. Salinity load  
+2. Phosphate load  
+3. Particulate Organic Phosphorus (POP)  
+4. Ammonium load  
+5. Particulate Organic Nitrogen (PON)  
+6. Dissolved Silica load  
+7. Chlorophyll-a load  
 
-4. Environment Setup
-You can set up the environment using either Conda or pip.
+---
 
-Option A — Conda (recommended)
+## ⚙️ Methodology
+1. **Data Preprocessing**  
+   - Missing values handled via mean imputation.  
+   - Outliers removed using IQR/Z-score methods.  
+   - Min-Max scaling applied for SVR/LSTM to normalize ranges.  
 
-bash
+2. **Feature Engineering**  
+   - Extracted temporal features (year, month, weekday).  
+   - Created lagged flow features to capture delayed hydrological effects.  
+   - Categorized flow into discrete bins (low, medium, high).  
 
-conda env create -f env/environment.yml
-conda activate nutrient-forecast
-Option B — pip
+3. **Models Implemented**  
+   - 🌳 **Random Forest (RF)**: ensemble of decision trees, interpretable via feature importance.  
+   - ⚡ **Support Vector Regression (SVM, RBF kernel)**: captures non-linear interactions in high-dimensional space.  
+   - 🔗 **LSTM**: neural network for sequential dependencies, designed for time-series forecasting.  
 
-bash
+4. **Hyperparameter Tuning**  
+   - RF & SVM → `GridSearchCV` (cross-validation).  
+   - LSTM → `Keras Tuner` with early stopping.  
 
-python -m venv .venv
-source .venv/bin/activate       # On Windows: .venv\Scripts\activate
-pip install -r env/requirements.txt
-5. Running the Notebook
-Ensure the required datasets are placed in data/.
+5. **Evaluation Metrics**  
+   - R² (variance explained)  
+   - Adjusted R² (penalised for irrelevant features)  
+   - Mean Squared Error (MSE)  
+   - Root Mean Squared Error (RMSE)  
 
-Launch Jupyter Lab or Notebook:
+---
 
-bash
+## 📊 Results
 
-jupyter lab
-Open three model.ipynb.
+### Model Comparison
+| Model          | R²      | Adjusted R² | MSE     | RMSE   |
+|----------------|---------|-------------|---------|--------|
+| **SVM**        | 0.96239 | 0.95235     | 321.83  | 17.94  |
+| Random Forest  | 0.91361 | 0.92456     | 739.32  | 27.19  |
+| LSTM           | 0.58018 | 0.58263     | 3292.81 | 57.38  |
 
-Run all cells sequentially:
+- **SVM** consistently achieved the **highest accuracy** across all nutrients.  
+- **RF** performed well but was less precise during extreme events.  
+- **LSTM** underperformed due to dataset size and noise (≈9.5 years is limited for deep learning).  
 
-Configuration – set file paths, parameters, and random seed.
+### Key Findings
+- **River Flow** = dominant predictor for all nutrients.  
+- **Seasonality (month, year)** = secondary influence, especially for chlorophyll-a.  
+- **Daily/weekly indicators** = minimal impact.  
+- **Prediction errors** = lowest for phosphate and ammonium, highest for PON and dissolved silica during flood-driven surges.  
 
-Preprocessing – handle missing values, remove outliers, scale features.
+### Visualisations
+The notebook produces:
+- **True vs Predicted time-series plots** (nutrient-by-nutrient).  
+- **Residual error histograms**.  
+- **Feature importance bar charts**.  
+- **Decision boundary visualisations** (SVM).  
 
-Feature Engineering – generate temporal and hydrological features.
+---
 
-Model Training – fit and tune SVM, RF, and LSTM models.
+## 💡 Implications
+- For **researchers**: Kernel-based ML (SVM) is highly effective for **medium-scale hydrological datasets**, outperforming deep learning in this case.  
+- For **practitioners**: SVM models can be integrated into **real-time monitoring systems**, supporting proactive nutrient management (e.g., reservoir releases, runoff control).  
+- For **policy makers**: The dominance of flow highlights the importance of **flow regulation** in reducing nutrient pollution risk.  
 
-Evaluation – compute R², Adjusted R², MSE, and RMSE; produce diagnostic plots.
+---
 
-Export – save metrics to outputs/ and plots to figures/.
+## 🚧 Limitations
+- Limited environmental covariates (no precipitation, turbidity, or land-use data).  
+- Event-driven peaks (flood surges) not fully captured.  
+- Trained on one basin only; generalisation to other catchments untested.  
+- Data quality remains a dependency (sensor errors, missing values).  
 
-6. Reproducibility Notes
-Train/Test Split – fixed temporal split to prevent data leakage.
+---
 
-Random Seeds – fixed across all models for deterministic results.
+## 🔮 Future Work
+- Expand feature set with **precipitation, turbidity, water temperature, and land use**.  
+- Develop **hybrid models** combining physical process models with ML.  
+- Train event-specific submodels for **flood/drought nutrient spikes**.  
+- Test **cross-basin transferability** to other Australian or global rivers.  
+- Deploy into **real-time dashboards** for water managers.  
 
-Hyperparameters – tuned via grid search (SVM, RF) and Keras Tuner (LSTM).
+---
 
-Outputs – include all figures and tables referenced in the report’s experimental evaluation.
+## 📦 Requirements
+Install dependencies before running the notebook:
 
+```bash
+pip install pandas numpy matplotlib seaborn scikit-learn tensorflow keras-tuner
